@@ -32,6 +32,50 @@ tinymce.PluginManager.add('s3url', function(editor) {
     }
   }
 
+  var buildLinktypeValues = function() {
+    var valueList = [];
+    tinymce.each(editor.settings.s3url.linktypes, function(linktype) {
+      valueList.push({
+        text: linktype,
+        value: linktype.toLowerCase()
+      });
+    });
+    return valueList;
+  }
+
+  var buildFileTypeValues = function() {
+    var valueList = [];
+    tinymce.each(editor.settings.s3url.filetypes, function(filetype) {
+      valueList.push({
+        text: filetype,
+        value: filetype.toLowerCase()
+      });
+    });
+    return valueList;
+  }
+
+  var buildOrientationValues = function() {
+    var valueList = [];
+    tinymce.each(editor.settings.s3url.orientations, function(orientation) {
+      valueList.push({
+        text: orientation,
+        value: orientation.toLowerCase()
+      });
+    });
+    return valueList;
+  }
+
+  var buildVisualStyleValues = function() {
+    var valueList = [];
+    tinymce.each(editor.settings.s3url.styles, function(style) {
+      valueList.push({
+        text: style,
+        value: 'btn-' + style.toLowerCase()
+      });
+    });
+    return valueList;
+  }
+
   var openDialog = function () {
     selectedElm = editor.selection.getNode();
     anchorElm = editor.dom.getParent(selectedElm, 'a[href]');
@@ -66,39 +110,29 @@ tinymce.PluginManager.add('s3url', function(editor) {
           type: 'listbox',
           name: 'linktype',
           label: 'Link Type',
-          values: [
-            {text: 'Download', value: 'download'},
-            {text: 'Offer', value: 'offer'}
-          ]
+          values: buildLinktypeValues(),
+          value: anchorElm ? (editor.dom.getAttrib(anchorElm, 'download') ? 'download' : 'offer') : null 
         },
         {
           type: 'listbox',
           name: 'filetype',
           label: 'File Type',
-          values: [
-            {text: 'Document/PDF', value: 'pdf'},
-            {text: 'Video', value: 'video'},
-            {text: 'Audesk design files', value: 'design'}
-          ]
+          values: buildFileTypeValues(),
+          value: anchorElm ? editor.dom.getAttrib(anchorElm, 'pagefile-type') : null
         },
         {
           type: 'listbox',
           name: 'orientation',
           label: 'Display Orientation',
-          values: [
-            {text: 'Vertical', value: 'vertical'},
-            {text: 'Horizontal', value: 'horizontal'}
-          ]
+          values: buildOrientationValues(),
+          value: anchorElm ? editor.dom.getAttrib(anchorElm, 'orientation') : null
         },
         {
           type: 'listbox',
           name: 'class',
           label: 'Visual style',
-          values: [
-            {text: 'Primary', value: 'btn-primary'},
-            {text: 'Normal', value: 'btn'},
-            {text: 'Secondary', value: 'btn-secondary'}
-          ]
+          values: buildVisualStyleValues(),
+          value: anchorElm ? editor.dom.getAttrib(anchorElm, 'class') : null
         }
       ],
       onsubmit: function(e) {
@@ -119,6 +153,8 @@ tinymce.PluginManager.add('s3url', function(editor) {
           var filename = filehref[filehref.length - 1].split('.')[0];
           if (e.data.linktype == 'download') {
             linkAttrs['download'] = filename;
+          } else {
+            linkAttrs['download'] = null;
           }
 
           if (!isS3URL(e.data.href)) {
