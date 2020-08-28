@@ -1,4 +1,5 @@
-tinymce.PluginManager.add('s3url', function(editor) {
+tinymce.PluginManager.add('s3url', function(editor, url) {
+  tinymce.DOM.loadCSS(url + '/css/s3url.css');
   function isOnlyTextSelected(anchorElm) {
     var html = editor.selection.getContent();
     // Partial html and not a fully selected anchor element
@@ -70,7 +71,7 @@ tinymce.PluginManager.add('s3url', function(editor) {
     tinymce.each(editor.settings.s3url.styles, function(style) {
       valueList.push({
         text: style,
-        value: 'btn-' + style.toLowerCase()
+        value: 'mce-adsk-btn-' + style.toLowerCase()
       });
     });
     return valueList;
