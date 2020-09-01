@@ -34,7 +34,10 @@ tinymce.PluginManager.add('s3url', function(editor, url) {
   }
 
   var buildLinktypeValues = function() {
-    var valueList = [];
+    var valueList = [{
+      text: "- Select a link type -",
+      value: null
+    }];
     tinymce.each(editor.settings.s3url.linktypes, function(linktype) {
       valueList.push({
         text: linktype,
@@ -45,7 +48,10 @@ tinymce.PluginManager.add('s3url', function(editor, url) {
   }
 
   var buildFileTypeValues = function() {
-    var valueList = [];
+    var valueList = [{
+      text: "- Select a file type -",
+      value: null
+    }];
     tinymce.each(editor.settings.s3url.filetypes, function(filetype) {
       valueList.push({
         text: filetype,
@@ -56,7 +62,10 @@ tinymce.PluginManager.add('s3url', function(editor, url) {
   }
 
   var buildOrientationValues = function() {
-    var valueList = [];
+    var valueList = [{
+      text: "- Select orientation -",
+      value: null
+    }];
     tinymce.each(editor.settings.s3url.orientations, function(orientation) {
       valueList.push({
         text: orientation,
@@ -67,7 +76,10 @@ tinymce.PluginManager.add('s3url', function(editor, url) {
   }
 
   var buildVisualStyleValues = function() {
-    var valueList = [];
+    var valueList = [{
+      text: "- Select a visual style -",
+      value: null
+    }];
     tinymce.each(editor.settings.s3url.styles, function(style) {
       valueList.push({
         text: style,
