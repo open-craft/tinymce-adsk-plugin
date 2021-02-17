@@ -1,4 +1,4 @@
-.mce-adsk-btn-primary {
+.mce-custom-btn-primary {
   background-color: #0696D7;
   border: none;
   color: white !important;
@@ -11,7 +11,7 @@
   cursor: pointer;
 }
 
-.mce-adsk-btn-normal {
+.mce-custom-btn-normal {
   background-color: #87BC40;
   border: none;
   color: black !important;
@@ -24,6 +24,6 @@
   cursor: pointer;
 }
 
-.mce-adsk-btn-secondary {
+.mce-custom-btn-secondary {
     color: #0696D7 !important;
 }

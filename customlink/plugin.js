@@ -1,5 +1,5 @@
-tinymce.PluginManager.add('s3url', function(editor, url) {
-  tinymce.DOM.loadCSS(url + '/css/s3url.css');
+tinymce.PluginManager.add('customlink', function(editor, url) {
+  tinymce.DOM.loadCSS(url + '/css/customlink.css');
   function isOnlyTextSelected(anchorElm) {
     var html = editor.selection.getContent();
     // Partial html and not a fully selected anchor element
@@ -24,21 +24,12 @@ tinymce.PluginManager.add('s3url', function(editor, url) {
   	return true;
   }
 
-  function isS3URL(href) {
-    var s3regex = /(https:\/\/)?(s3-|s3\.)?(.*)\.amazonaws\.com(.*)/;
-    if (s3regex.test(href)) {
-      return true
-    } else {
-      return false
-    }
-  }
-
   var buildLinktypeValues = function() {
     var valueList = [{
       text: "- Select a link type -",
       value: null
     }];
-    tinymce.each(editor.settings.s3url.linktypes, function(linktype) {
+    tinymce.each(editor.settings.customlink.linktypes, function(linktype) {
       valueList.push({
         text: linktype,
         value: linktype.toLowerCase()
@@ -52,7 +43,7 @@ tinymce.PluginManager.add('s3url', function(editor, url) {
       text: "- Select a file type -",
       value: null
     }];
-    tinymce.each(editor.settings.s3url.filetypes, function(filetype) {
+    tinymce.each(editor.settings.customlink.filetypes, function(filetype) {
       valueList.push({
         text: filetype,
         value: filetype.toLowerCase()
@@ -66,7 +57,7 @@ tinymce.PluginManager.add('s3url', function(editor, url) {
       text: "- Select orientation -",
       value: null
     }];
-    tinymce.each(editor.settings.s3url.orientations, function(orientation) {
+    tinymce.each(editor.settings.customlink.orientations, function(orientation) {
       valueList.push({
         text: orientation,
         value: orientation.toLowerCase()
@@ -80,10 +71,10 @@ tinymce.PluginManager.add('s3url', function(editor, url) {
       text: "- Select a visual style -",
       value: null
     }];
-    tinymce.each(editor.settings.s3url.styles, function(style) {
+    tinymce.each(editor.settings.customlink.styles, function(style) {
       valueList.push({
         text: style,
-        value: 'mce-adsk-btn-' + style.toLowerCase()
+        value: 'mce-custom-btn-' + style.toLowerCase()
       });
     });
     return valueList;
@@ -94,7 +85,7 @@ tinymce.PluginManager.add('s3url', function(editor, url) {
     anchorElm = editor.dom.getParent(selectedElm, 'a[href]');
     onlyText = isOnlyTextSelected();
     return editor.windowManager.open({
-      title: 'S3 Link',
+      title: 'Custom Link',
       data: {
         text: initialText = anchorElm ? (anchorElm.innerText || anchorElm.textContent) : editor.selection.getContent({format: 'text'}),
         href: anchorElm ? editor.dom.getAttrib(anchorElm, 'href') : '',
@@ -124,7 +115,7 @@ tinymce.PluginManager.add('s3url', function(editor, url) {
           name: 'linktype',
           label: 'Link Type',
           values: buildLinktypeValues(),
-          value: anchorElm ? (editor.dom.getAttrib(anchorElm, 'download') ? 'download' : 'offer') : null 
+          value: anchorElm ? (editor.dom.getAttrib(anchorElm, 'download') ? 'download' : 'offer') : null
         },
         {
           type: 'listbox',
@@ -170,7 +161,7 @@ tinymce.PluginManager.add('s3url', function(editor, url) {
             linkAttrs['download'] = null;
           }
 
-          if (!isS3URL(e.data.href)) {
+          if (!e.data.href) {
             editor.execCommand('unlink');
             return;
           }
@@ -187,7 +178,7 @@ tinymce.PluginManager.add('s3url', function(editor, url) {
           	}
 
           	editor.dom.setAttribs(anchorElm, linkAttrs);
-          
+
           	editor.selection.select(anchorElm);
           	editor.undoManager.add();
           } else {
@@ -204,17 +195,17 @@ tinymce.PluginManager.add('s3url', function(editor, url) {
   };
 
   // Add a button that opens a window
-  editor.addButton('s3url', {
+  editor.addButton('customlink', {
     icon: false,
-    text: 'S3 Link',
+    text: 'Custom Link',
     stateSelector: "a[href]",
     onclick: openDialog
   });
 
   // Adds a menu item, which can then be included in any menu via the menu/menubar configuration
-  editor.addMenuItem('s3url', {
+  editor.addMenuItem('customlink', {
     icon: false,
-    text: 'S3 Link',
+    text: 'Custom Link',
     stateSelector: "a[href]",
     onclick: openDialog
   });
